@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ReactComponent as SendIcon } from '../../images/icon-send.svg';
 
-const Checkbox = ({ features, handleSystemFeatures }) => {
-	const [input, setInput] = useState('');
+interface Props{
+	features: string[],
+	handleSystemFeatures : (features: string) => Promise<void>
+}
 
-	const handleChange = (event) => {
-		setInput(event.target.value);
-	};
-
-	const [checkedValues, setCheckedValues] = useState([]);
+const Checkbox: React.FC<Props> = ({ features, handleSystemFeatures }) => {
+	const [checkedValues, setCheckedValues] = useState<string[]>([]);
 
 	// Define an array of checkbox values
 	const checkboxValues = features.map((x) => {
@@ -16,7 +15,7 @@ const Checkbox = ({ features, handleSystemFeatures }) => {
 	});
 
 	// Handle checkbox change event
-	const handleCheckboxChange = (event) => {
+	const handleCheckboxChange = (event: { target: { value: any; checked: any; }; }) => {
 		// Get the checked value
 		const checkedValue = event.target.value;
 
@@ -29,8 +28,8 @@ const Checkbox = ({ features, handleSystemFeatures }) => {
 		}
 	};
 
-	const combinedString = checkedValues
-		.reduce((acc, currentValue) => {
+	const combinedString: string = checkedValues
+		.reduce((acc: string[], currentValue: string) => {
 			const matchedCheckbox = checkboxValues.find((checkbox) => checkbox.value === currentValue);
 			if (matchedCheckbox) {
 				acc.push(matchedCheckbox.label);

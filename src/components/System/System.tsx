@@ -1,22 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ReactComponent as SendIcon } from '../../images/icon-send.svg';
 
-const Checkbox = ({ features, handleTableFeatures }) => {
+interface Props{
+	features: string[],
+	handleTableFeatures : (features: string) => Promise<void>
+}
+
+const Checkbox: React.FC<Props> = ({ features, handleTableFeatures }) => {
 	const [input, setInput] = useState('');
 
-	const handleChange = (event) => {
+	const handleChange = (event: { target: HTMLInputElement; }) => {
 		setInput(event.target.value);
 	};
 
-	const [checkedValues, setCheckedValues] = useState([]);
+	const [checkedValues, setCheckedValues] = useState<string[]>([]);
 
 	// Define an array of checkbox values
-	const checkboxValues = features.map((x) => {
+	const checkboxValues: { value: string; label: string; }[] = features.map((x) => {
 		return { label: x, value: x };
 	});
 
 	// Handle checkbox change event
-	const handleCheckboxChange = (event) => {
+	const handleCheckboxChange = (event: { target: { value: any; checked: any; }; }) => {
 		// Get the checked value
 		const checkedValue = event.target.value;
 
@@ -29,8 +34,8 @@ const Checkbox = ({ features, handleTableFeatures }) => {
 		}
 	};
 
-	const combinedString = checkedValues
-		.reduce((acc, currentValue) => {
+	const combinedString: string = checkedValues
+		.reduce((acc: string[], currentValue: string) => {
 			const matchedCheckbox = checkboxValues.find((checkbox) => checkbox.value === currentValue);
 			if (matchedCheckbox) {
 				acc.push(matchedCheckbox.label);

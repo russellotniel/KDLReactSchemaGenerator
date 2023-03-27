@@ -3,10 +3,17 @@ import { UserStoriesGenerator } from '../../helpers/helpers';
 import { ReactComponent as SendIcon } from '../../images/icon-send.svg';
 import Checkbox from './Checkbox';
 
-const Generator = ({ handleSystemFeatures, loading, setLoading }) => {
+interface Props{
+	loading: boolean,
+	setLoading: (bool: boolean) => void,
+	handleSystemFeatures : (features: string) => Promise<void>
+}
+
+const Generator: React.FC<Props> = ({ handleSystemFeatures, loading, setLoading }) => {
 	const [input, setInput] = useState('');
 	const [features, setFeatures] = useState([]);
-	const handleChange = (event) => {
+	
+	const handleChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
 		setInput(event.target.value);
 	};
 
@@ -16,7 +23,7 @@ const Generator = ({ handleSystemFeatures, loading, setLoading }) => {
 		processMessageToChatGPT(input);
 	};
 
-	async function processMessageToChatGPT(chatMessages) {
+	async function processMessageToChatGPT(chatMessages: string) {
 		await UserStoriesGenerator(chatMessages)
 			.then((data) => {
 				return data.json();
@@ -25,8 +32,8 @@ const Generator = ({ handleSystemFeatures, loading, setLoading }) => {
 				const arr = data.choices[0].message.content
 					.replace(/\n/g, '')
 					.split('*')
-					.filter((item) => item !== '')
-					.map((item) => item.trim());
+					.filter((item: string) => item !== '')
+					.map((item: string) => item.trim());
 				setFeatures(arr);
 				setLoading(false);
 			})

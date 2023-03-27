@@ -20,8 +20,8 @@ const SqlGenerator = () => {
 	};
 
 	//UserStories
-	const [systemFeatures, setSystemFeatures] = useState([]);
-	const handleSystemFeatures = async (features) => {
+	const [systemFeatures, setSystemFeatures] = useState<string[]>([]);
+	const handleSystemFeatures = async (features: string) => {
 		setLoading(true);
 		await SystemGenerator(features)
 			.then((data) => {
@@ -31,8 +31,8 @@ const SqlGenerator = () => {
 				const arr = data.choices[0].message.content
 					.replace(/\n/g, '')
 					.split('*')
-					.filter((item) => item !== '')
-					.map((item) => item.trim());
+					.filter((item: string) => item !== '')
+					.map((item: string) => item.trim());
 				setSystemFeatures(arr);
 				setLoading(false);
 				nextStep();
@@ -44,7 +44,8 @@ const SqlGenerator = () => {
 
 	//system
 	const [tableFeatures, setTableFeatures] = useState('');
-	const handleTableFeatures = async (features) => {
+
+	const handleTableFeatures: (features: string) => Promise<void> = async (features: string) => {
 		setLoading(true);
 		await TableGenerator(features)
 			.then((data) => {
@@ -78,16 +79,15 @@ const SqlGenerator = () => {
 						<span className='visually-hidden'>Loading...</span>
 					</Spinner>
 				</div>
-			) : (
-				<div className='d-flex flex-row chatbot align-items-center justify-content-center mermaid'>
+			) : (null)}
+				{/* <div className='d-flex flex-row chatbot align-items-center justify-content-center mermaid'>
 					{`
 					graph LR;
 						A-->B;
 						B-->C;
 						B-->D[plop lanflz eknlzeknfz];
-      		`}
-				</div>
-			)}
+      				`}
+				</div> */}
 		</div>
 	);
 };

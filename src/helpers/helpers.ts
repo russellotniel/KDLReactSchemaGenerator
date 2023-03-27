@@ -1,4 +1,4 @@
-export const UserStoriesGenerator = async (chatMessages) => {
+export const UserStoriesGenerator = async (chatMessages: string) => {
 	const userMessage = {
 		role: 'user',
 		content: chatMessages,
@@ -27,7 +27,7 @@ export const UserStoriesGenerator = async (chatMessages) => {
 	});
 };
 
-export const SystemGenerator = async (chatMessages) => {
+export const SystemGenerator = async (chatMessages: string) => {
 	const userMessage = {
 		role: 'user',
 		content: chatMessages,
@@ -56,7 +56,7 @@ export const SystemGenerator = async (chatMessages) => {
 	});
 };
 
-export const TableGenerator = async (chatMessages) => {
+export const TableGenerator = async (chatMessages: string) => {
 	const userMessage = {
 		role: 'user',
 		content: chatMessages,

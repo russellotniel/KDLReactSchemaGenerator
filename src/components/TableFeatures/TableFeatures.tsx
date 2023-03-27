@@ -1,4 +1,11 @@
-const tableFeatures = ({ features, setStep }) => {
+
+
+interface Props{
+	features: string,
+	setStep: (num: number) => any,
+}
+
+const tableFeatures: React.FC<Props> = ({ features, setStep }) => {
 	return (
 		<div className='w-100'>
 			<div className='flex-column input-container h-75'>
