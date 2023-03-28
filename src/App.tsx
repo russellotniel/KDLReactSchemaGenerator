@@ -75,16 +75,15 @@ const SqlGenerator = () => {
         return data.json();
       })
       .then((data) => {
-		setLoading(false);
+        setLoading(false);
         if (containsCreateTable(data.choices[0].message.content)) {
           const newData = postgresqlToMermaid(data.choices[0].message.content);
           setTableFeatures(newData);
           console.log(data);
-		  nextStep();
-        }else{
-			alert(data.choices[0].message.content);
-		}
-		
+          nextStep();
+        } else {
+          alert(data.choices[0].message.content);
+        }
       })
       .catch((e) => {
         alert("Error occured. Please Try Again");

@@ -27,12 +27,17 @@ const SchemaEditor: React.FC<Props> = ({ features }) => {
 
   return (
     <div>
+      <h4 className="text-center mb-4">Generated Query</h4>
       <textarea
+        style={{ height: "250px" }}
         value={inputValue}
         onChange={handleInputChange}
         className="form-control"
       />
-      <div dangerouslySetInnerHTML={{ __html: diagramHTML }} style={{ width: '1500px' }}/>
+      <div
+        dangerouslySetInnerHTML={{ __html: diagramHTML }}
+        style={{ width: "1500px" }}
+      />
     </div>
   );
 };
