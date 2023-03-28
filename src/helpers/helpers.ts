@@ -6,7 +6,7 @@ export const UserStoriesGenerator = async (chatMessages: string) => {
 
 	const systemMessage = {
 		role: 'system',
-		content: 'The response must be in bullet points without preamble. The bullet points change with *',
+		content: 'Users want to make an App. The response must be in bullet points without preamble. The bullet points change with *. Not Accepting "-" bullet points. The points no less than five',
 	};
 
 	const apiRequestBody = {
@@ -35,7 +35,7 @@ export const SystemGenerator = async (chatMessages: string) => {
 
 	const systemMessage = {
 		role: 'system',
-		content: 'The response must be in bullet points without preamble. The bullet points change with *. Make the features with the input.',
+		content: 'The response must be in bullet points without preamble. The bullet points change with *. Not Accepting "-" bullet points. The points no less than five. No points inside of points. I do not need the explanation',
 	};
 
 	const apiRequestBody = {

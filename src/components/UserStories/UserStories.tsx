@@ -16,10 +16,13 @@ const Generator: React.FC<Props> = ({ handleSystemFeatures, loading, setLoading 
 		setInput(event.target.value);
 	};
 
-	const sendMessage = () => {
+	const sendMessage = async () => {
 		console.log(input);
 		setLoading(true);
-		processMessageToChatGPT(input);
+		do{
+			await processMessageToChatGPT(input);
+		}while(loading != false)
+		
 	};
 
 	async function processMessageToChatGPT(chatMessages: string) {
@@ -33,11 +36,16 @@ const Generator: React.FC<Props> = ({ handleSystemFeatures, loading, setLoading 
 					.split('*')
 					.filter((item: string) => item !== '')
 					.map((item: string) => item.trim());
-				setFeatures(arr);
-				setLoading(false);
+				if(arr.length >= 5){
+					setFeatures(arr);
+					setLoading(false)
+				}else{
+					setLoading(true)
+				}
 			})
 			.catch((e) => {
-				setLoading(false);
+				alert("Error Occured. Please Try Again");
+				setLoading(false)
 			});
 	}
 

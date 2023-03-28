@@ -23,6 +23,12 @@ const SqlGenerator = () => {
 	const [systemFeatures, setSystemFeatures] = useState<string[]>([]);
 	const handleSystemFeatures = async (features: string) => {
 		setLoading(true);
+		do{
+			await processToGenerateSystemFeatures(features);
+		}while(loading != false)
+	};
+
+	const processToGenerateSystemFeatures = async (features: string) => {
 		await SystemGenerator(features)
 			.then((data) => {
 				return data.json();
@@ -33,14 +39,20 @@ const SqlGenerator = () => {
 					.split('*')
 					.filter((item: string) => item !== '')
 					.map((item: string) => item.trim());
-				setSystemFeatures(arr);
-				setLoading(false);
-				nextStep();
+				if(arr.length >= 5){
+					setSystemFeatures(arr);
+					setLoading(false);
+					nextStep();
+					console.log(step)
+				}else{
+					setLoading(true)
+				}
 			})
 			.catch((e) => {
+				setLoading(false);
 				alert('Error occured. Please Try Again');
 			});
-	};
+	}
 
 	//system
 	const [tableFeatures, setTableFeatures] = useState('');
