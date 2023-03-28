@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { UserStoriesGenerator } from '../../helpers/helpers';
-import { ReactComponent as SendIcon } from '../../images/icon-send.svg';
 import Checkbox from './Checkbox';
 
 interface Props{
@@ -43,22 +42,37 @@ const Generator: React.FC<Props> = ({ handleSystemFeatures, loading, setLoading 
 	}
 
 	return (
-		<div className='w-100'>
-			<div className='flex-column input-container'>
-				{/* <textarea className='form-control ' type='text' id='floatingTextarea' placeholder='What do you want to make...' value={input} onChange={handleChange} disabled={loading} /> */}
-				<textarea className='form-control ' id='floatingTextarea' placeholder='What do you want to make...' value={input} onChange={handleChange} disabled={loading} />
-				<button className='button-primary' onClick={sendMessage} disabled={loading}>
-					<SendIcon className='send-icon' />
-				</button>
+			<div>
+			<h1 className='text-center mb-2'>Generate your database schema</h1>
+			<textarea
+			  className="form-control"
+			  id="floatingTextarea"
+			  placeholder="What do you want to make..."
+			  style={{height:"100px", resize:"none"}}
+			  value={input}
+			  onChange={handleChange}
+			  disabled={loading}
+			/>
+			<div className="p-2 text-center">
+			  <button
+				className="btn btn-success w-50"
+				onClick={sendMessage}
+				disabled={loading}
+			  >
+				<b>Generate features</b>
+			  </button>
 			</div>
-			{features.length != 0 ? (
-				<div className='container p-4'>
-					<p>Please select the features</p>
-					<Checkbox features={features} handleSystemFeatures={handleSystemFeatures} />
-				</div>
-			) : null}
+		  {features.length != 0 ? (
+			<div className="container p-4">
+			  <p>Please select the features</p>
+			  <Checkbox
+				features={features}
+				handleSystemFeatures={handleSystemFeatures}
+			  />
+			</div>
+		  ) : null}
 		</div>
-	);
-};
+	  );
+	};
 
 export default Generator;

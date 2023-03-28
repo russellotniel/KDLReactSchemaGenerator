@@ -67,8 +67,8 @@ const SqlGenerator = () => {
 	});
 
 	return (
-		<div className='flex-column chatbot overflow-auto'>
-			<div className='d-flex align-items-center '>
+		<div className='vh-100 d-flex align-items-center justify-content-center chatbot'>
+			<div className=''>
 				{step === 1 ? <UserStories handleSystemFeatures={handleSystemFeatures} loading={loading} setLoading={setLoading} /> : null}
 				{step === 2 ? <System features={systemFeatures} handleTableFeatures={handleTableFeatures} /> : null}
 				{step === 3 ? <TableFeatures features={tableFeatures} setStep={setStep} /> : null}
