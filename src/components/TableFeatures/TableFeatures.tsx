@@ -32,7 +32,7 @@ const SchemaEditor: React.FC<Props> = ({ features }) => {
         onChange={handleInputChange}
         className="form-control"
       />
-      <div dangerouslySetInnerHTML={{ __html: diagramHTML }} />
+      <div dangerouslySetInnerHTML={{ __html: diagramHTML }} style={{ width: '1500px' }}/>
     </div>
   );
 };
