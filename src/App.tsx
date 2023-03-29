@@ -11,7 +11,7 @@ const SqlGenerator = () => {
 	//loading
 	const [loading, setLoading] = useState(false);
 	//Stepper
-	const [step, setStep] = useState(1);
+	const [step, setStep] = useState(3);
 	const nextStep = () => {
 		setStep(step + 1);
 	};
@@ -85,19 +85,24 @@ const SqlGenerator = () => {
 	};
 
 	return (
-		<div className='vh-100 d-flex align-items-center justify-content-center chatbot'>
-			<div className=''>
-				{step === 1 ? <UserStories handleSystemFeatures={handleSystemFeatures} loading={loading} setLoading={setLoading} /> : null}
-				{step === 2 ? <System features={systemFeatures} handleTableFeatures={handleTableFeatures} /> : null}
-				{step === 3 ? <TableFeatures features={tableFeatures} /> : null}
-			</div>
-			{loading ? (
-				<div className='d-flex justify-content-end'>
-					<Spinner animation='border' role='status'>
-						<span className='visually-hidden'>Loading...</span>
-					</Spinner>
+		<div className='vh-100'>
+			{step !== 3 ? (
+				<div className='vh-100 d-flex align-items-center justify-content-center chatbot'>
+					<div className=''>
+						{step === 1 ? <UserStories handleSystemFeatures={handleSystemFeatures} loading={loading} setLoading={setLoading} /> : null}
+						{step === 2 ? <System features={systemFeatures} handleTableFeatures={handleTableFeatures} /> : null}
+					</div>
+					{loading ? (
+						<div className='d-flex justify-content-end'>
+							<Spinner animation='border' role='status'>
+								<span className='visually-hidden'>Loading...</span>
+							</Spinner>
+						</div>
+					) : null}
 				</div>
-			) : null}
+			) : (
+				<div>{step === 3 ? <TableFeatures features={tableFeatures} /> : null}</div>
+			)}
 		</div>
 	);
 };
