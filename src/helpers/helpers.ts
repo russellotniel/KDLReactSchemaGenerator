@@ -6,7 +6,7 @@ export const UserStoriesGenerator = async (chatMessages: string) => {
 
 	const systemMessage = {
 		role: 'system',
-		content: 'Users want to make an App. The response must be in bullet points without preamble. The bullet points change with *. Not Accepting "-" bullet points. The points no less than five',
+		content: 'User wants to make an App. The response must be in bullet points without preamble. Change the bullet points with *. Not Accepting "-" bullet points. Give no less than five points.',
 	};
 
 	const apiRequestBody = {
@@ -36,7 +36,7 @@ export const SystemGenerator = async (chatMessages: string) => {
 	const systemMessage = {
 		role: 'system',
 		content:
-			'Tell users what database feature should they make. The response must be in bullet points without preamble. The bullet points change with *. Not Accepting "-" bullet points. The points no less than five. No points inside of points. I do not need the explanation',
+			'Tell the user what database features they should make. The response must be in bullet points without preamble. Change the bullet points with *. Not Accepting "-" bullet points. Give no less than five points. No points inside of points. I do not need the explanation',
 	};
 
 	const apiRequestBody = {
@@ -65,7 +65,9 @@ export const TableGenerator = async (chatMessages: string) => {
 
 	const systemMessage = {
 		role: 'system',
-		content: 'Please response with an AML Syntax. Generate the database table from user input without preamble.',
+		content:
+			'Please generate an PostgreSQL Database DDL. Generate the database table from user input without preamble. To create table, use CREATE TABLE tableName, do not use CREATE TABLE IF NOT EXISTS or other examples. Do not make ALTER TABLE, TRIGGERS, INDEXES, etc. Just make the tables with the desired formats, with primary keys and foreign keys.',
+		// content: 'Please response with an AML Syntax. Generate the database table from user input without preamble.',
 	};
 
 	const apiRequestBody = {
@@ -117,6 +119,8 @@ export function postgresqlToMermaid(query: string): string {
 		if (trimmedLine.startsWith('CREATE TABLE')) {
 			const tableName = trimmedLine.match(/CREATE TABLE\s+(\w+)/)![1];
 
+			console.log(tableName);
+
 			currentTable = {
 				tableName,
 				columns: [],
@@ -148,13 +152,35 @@ export function postgresqlToMermaid(query: string): string {
 				.replace(/\s+CHECK\s+\(.*?\)/g, '')
 				.replace(/^(SERIAL\s+PRIMARY\s+KEY|SERIAL|BIGSERIAL|SMALLSERIAL)/, 'SERIAL PRIMARY KEY')
 				.replace(/\s.*/, '');
+
 			const isPrimaryKey = trimmedLine.includes('PRIMARY KEY');
 
-			currentTable.columns.push({
-				columnName,
-				dataType,
-				isPrimaryKey,
-			});
+			if (isPrimaryKey && columnName.startsWith('PRIMARY')) {
+				currentTable.columns.map((column) => console.log(column.columnName));
+
+				currentTable.columns.map((column) =>
+					currentTable?.columns.push({
+						columnName: column.columnName,
+						dataType: 'SERIAL',
+						isPrimaryKey: true,
+					})
+				);
+
+				console.log('PRE FILTER');
+				console.log(currentTable);
+
+				currentTable.columns = currentTable.columns.filter((column) => column.isPrimaryKey);
+
+				console.log('FILTERED');
+				console.log(currentTable);
+			} else {
+				// This is a regular column
+				currentTable.columns.push({
+					columnName,
+					dataType,
+					isPrimaryKey,
+				});
+			}
 		}
 	}
 
@@ -168,9 +194,9 @@ export function postgresqlToMermaid(query: string): string {
 				.join('\n  ');
 
 			return `${table.tableName} {
-  ${pkColumns} SERIAL PK
-  ${nonPkColumns}
-}`;
+				${pkColumns.map((pkColumn) => `${pkColumn} SERIAL PK`).join('\n  ')}
+				${nonPkColumns}
+			}`;
 		})
 		.join('\n  ')}
 
