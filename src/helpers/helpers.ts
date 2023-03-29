@@ -57,6 +57,36 @@ export const SystemGenerator = async (chatMessages: string) => {
 	});
 };
 
+export const PostgreSQLGenerator = async (chatMessages: string) => {
+	const userMessage = {
+		role: 'user',
+		content: chatMessages,
+	};
+
+	const systemMessage = {
+		role: 'system',
+		content:
+			'Please generate an PostgreSQL Database DDL from the given Mermaid erDiagram Code without preamble.',
+	};
+
+	const apiRequestBody = {
+		model: 'gpt-3.5-turbo',
+		messages: [
+			systemMessage, // always needs to be the first message
+			userMessage, // [Message]
+		],
+	};
+
+	return await fetch('https://api.openai.com/v1/chat/completions', {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(apiRequestBody),
+	});
+};
+
 export const TableGenerator = async (chatMessages: string) => {
 	const userMessage = {
 		role: 'user',
@@ -66,7 +96,7 @@ export const TableGenerator = async (chatMessages: string) => {
 	const systemMessage = {
 		role: 'system',
 		content:
-			'Please generate an PostgreSQL Database DDL. Generate the database table from user input without preamble. To create table, use CREATE TABLE tableName, do not use CREATE TABLE IF NOT EXISTS or other examples. Do not make ALTER TABLE, TRIGGERS, INDEXES, etc. Just make the tables with the desired formats, with primary keys and foreign keys.',
+			'Please generate an PostgreSQL Database DDL. Generate the database table from user input without preamble. To create table, use CREATE TABLE tableName, do not use CREATE TABLE IF NOT EXISTS or other examples. Do not make ALTER TABLE, TRIGGERS, INDEXES, etc. Just make the tables with the desired formats, with primary keys and foreign keys. For foreign keys, use this format FOREIGN KEY (attribute) REFERENCES tableName(attribute). Make sure you use the syntax FOREIGN KEY.',
 		// content: 'Please response with an AML Syntax. Generate the database table from user input without preamble.',
 	};
 
@@ -143,12 +173,11 @@ export function postgresqlToMermaid(query: string): string {
 
 			const columnName = matches[1];
 			const dataType = matches[2]
-				.replace(/DECIMAL\(\d+,\s*\d+\),?/g, 'FLOAT')
-				.replace(/NUMERIC\(\d+,\s*\d+\),?/g, 'FLOAT')
-				.replace(',', '')
+				.replace(/DECIMAL\(\d+,\s*\d+\)|NUMERIC\(\d+,\s*\d+\)/g, 'FLOAT')
+				.replace(/,\s*/g, '')
 				.replace(/\s+NOT\s+NULL/g, '')
 				.replace(/\s+UNIQUE/g, '')
-				.replace(/\s+DEFAULT\s+\w+\(?\)?/g, '')
+				.replace(/\s+DEFAULT\s+.*$/, '')
 				.replace(/\s+CHECK\s+\(.*?\)/g, '')
 				.replace(/^(SERIAL\s+PRIMARY\s+KEY|SERIAL|BIGSERIAL|SMALLSERIAL)/, 'SERIAL PRIMARY KEY')
 				.replace(/\s.*/, '');

@@ -11,7 +11,7 @@ const SqlGenerator = () => {
 	//loading
 	const [loading, setLoading] = useState(false);
 	//Stepper
-	const [step, setStep] = useState(3);
+	const [step, setStep] = useState(1);
 	const nextStep = () => {
 		setStep(step + 1);
 	};
