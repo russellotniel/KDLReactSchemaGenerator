@@ -64,7 +64,7 @@ const SchemaEditor: React.FC<Props> = ({ features }) => {
 					</button>
 					{loading ? (
 						<div className='ms-3'>
-							<Spinner animation='border' role='status'>
+							<Spinner animation='border' role='status' variant='success'>
 								<span className='visually-hidden'>Loading...</span>
 							</Spinner>
 						</div>

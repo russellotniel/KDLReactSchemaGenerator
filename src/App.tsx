@@ -94,7 +94,7 @@ const SqlGenerator = () => {
 					</div>
 					{loading ? (
 						<div className='d-flex justify-content-end'>
-							<Spinner animation='border' role='status'>
+							<Spinner animation='border' role='status' variant='success'>
 								<span className='visually-hidden'>Loading...</span>
 							</Spinner>
 						</div>
