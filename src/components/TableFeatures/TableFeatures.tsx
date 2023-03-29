@@ -18,15 +18,29 @@ const SchemaEditor: React.FC<Props> = ({ features }) => {
 
 	useEffect(() => {
 		const input = ref.current;
-		if (input) input.setSelectionRange(cursor, cursor);
-	}, [ref, cursor, inputValue]);
+		if (input) {
+			input.value = features;
+		}
+		handleInputChange();
+	}, []);
 
+	useEffect(() => {
+		const input = ref.current;
+		if (input) {
+			input.setSelectionRange(input.selectionStart, input.selectionStart);
+		}
+	}, [ref, cursor]);
 	mermaid.initialize({ startOnLoad: true });
 
-	const handleInputChange = async (event: React.ChangeEvent<HTMLTextAreaElement>): Promise<void> => {
-		const text = event.target.value;
-		const cursorPosition = event.target.selectionStart;
-		setCursor(cursorPosition);
+	const handleInputChange = async (): Promise<void> => {
+		// const text = event.target.value;
+		let text: string;
+		let cursorPosition: number;
+		if (ref.current) {
+			text = ref.current.value;
+		} else {
+			text = '';
+		}
 		try {
 			const diagram = await mermaid.render('schema', text);
 			const svg = diagram.svg;
@@ -34,8 +48,9 @@ const SchemaEditor: React.FC<Props> = ({ features }) => {
 		} catch (e) {
 			//   setDiagramHTML(e);
 		}
-		setInputValue(text);
 	};
+
+	mermaid.initialize({ startOnLoad: true });
 
 	const generateSQL = async () => {
 		setLoading(true);
@@ -57,7 +72,8 @@ const SchemaEditor: React.FC<Props> = ({ features }) => {
 		<div className='d-flex vh-100'>
 			<div style={{ width: '50vw', height: '100vh' }}>
 				<h4 className='text-center mb-4'>Mermaid erDiagram Code</h4>
-				<textarea ref={ref} style={{ height: '90vh' }} value={inputValue} onChange={(e) => handleInputChange(e)} className='form-control' />
+				{/* <textarea ref={ref} style={{ height: '90vh' }} value={inputValue} onChange={(e) => handleInputChange(e)} className='form-control' /> */}
+				<textarea ref={ref} style={{ height: '90vh' }} onChange={handleInputChange} className='form-control' />
 				<div className='d-flex mt-2'>
 					<button className='d-flex btn btn-success' disabled={loading} onClick={generateSQL}>
 						{loading ? 'Generating...' : 'Generate SQL'}
@@ -71,7 +87,7 @@ const SchemaEditor: React.FC<Props> = ({ features }) => {
 					) : null}
 				</div>
 			</div>
-			<div className="ms-5">
+			<div className='ms-5'>
 				<div className='justify-content-center align-items-center'>
 					<div dangerouslySetInnerHTML={{ __html: diagramHTML }} style={{ width: '50vw', height: '60vh' }} />
 				</div>
