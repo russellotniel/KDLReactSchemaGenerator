@@ -46,16 +46,17 @@ const Checkbox: React.FC<Props> = ({ features, handleSystemFeatures }) => {
     <div>
       <div className="border rounded p-3">
         {checkboxValues.map((checkbox) => (
-          <div key={checkbox.value} style={{ textAlign: "left" }}>
+          <div key={checkbox.value} style={{ textAlign: "left" }} className="form-check">
             <input
               type="checkbox"
               className="form-check-input"
               id={checkbox.value}
+              style={{fontSize: "20px"}}
               value={checkbox.value}
               checked={checkedValues.includes(checkbox.value)}
               onChange={handleCheckboxChange}
             />
-            <label htmlFor={checkbox.value}>{checkbox.label}</label>
+            <label className="form-check-label" style={{fontSize: "20px"}} htmlFor={checkbox.value}>{checkbox.label}</label>
           </div>
         ))}
       </div>

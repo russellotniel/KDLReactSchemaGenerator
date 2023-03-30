@@ -55,16 +55,17 @@ const Checkbox: React.FC<Props> = ({ features, handleTableFeatures }) => {
       <h4 className="text-center mb-4">Select queries to be generated</h4>
       <div className="border rounded p-3">
         {checkboxValues.map((checkbox) => (
-          <div key={checkbox.value} style={{ textAlign: "left" }}>
+          <div key={checkbox.value} style={{ textAlign: "left" }} className="form-check">
             <input
               className="form-check-input"
               type="checkbox"
+              style={{fontSize: "20px"}}
               id={checkbox.value}
               value={checkbox.value}
               checked={checkedValues.includes(checkbox.value)}
               onChange={handleCheckboxChange}
             />
-            <label htmlFor={checkbox.value}>{checkbox.label}</label>
+            <label htmlFor={checkbox.value} style={{fontSize: "20px"}}>{checkbox.label}</label>
           </div>
         ))}
       </div>
