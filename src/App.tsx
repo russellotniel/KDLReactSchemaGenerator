@@ -5,7 +5,7 @@ import { postgresqlToMermaid, SystemGenerator, TableGenerator } from './helpers/
 import System from './components/System/System';
 import TableFeatures from './components/TableFeatures/TableFeatures';
 import { Spinner } from 'react-bootstrap';
-import mermaid from 'mermaid';
+import DMLGenerator from './components/DMLGenerator/DMLGenerator';
 
 const SqlGenerator = () => {
 	//loading
@@ -84,9 +84,17 @@ const SqlGenerator = () => {
 			});
 	};
 
+	// DDL
+	const [ddl, setDDL] = useState('');
+
+	const handleStep4 = (tempDDL: string) => {
+		setDDL(tempDDL);
+		nextStep();
+	};
+
 	return (
 		<div className='vh-100'>
-			{step !== 3 ? (
+			{step < 3 ? (
 				<div className='vh-100 d-flex align-items-center justify-content-center chatbot'>
 					<div className=''>
 						{step === 1 ? <UserStories handleSystemFeatures={handleSystemFeatures} loading={loading} setLoading={setLoading} /> : null}
@@ -101,7 +109,10 @@ const SqlGenerator = () => {
 					) : null}
 				</div>
 			) : (
-				<div>{step === 3 ? <TableFeatures features={tableFeatures} /> : null}</div>
+				<>
+					<div>{step === 3 ? <TableFeatures features={tableFeatures} handleStep4={handleStep4} /> : null}</div>
+					<div>{step === 4 ? <DMLGenerator ddl={ddl} /> : null}</div>
+				</>
 			)}
 		</div>
 	);

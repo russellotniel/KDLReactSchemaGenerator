@@ -236,3 +236,33 @@ export function postgresqlToMermaid(query: string): string {
 
 	return mermaidCode;
 }
+
+export const GenerateDML = async (chatMessages: string) => {
+	const userMessage = {
+		role: 'user',
+		content: chatMessages,
+	};
+
+	const systemMessage = {
+		role: 'system',
+		content:
+			'Act as a Software Developer. Please generate an PostgreSQL Database DML Statement. Generate the database table from user input without preamble, just give the codes. If data is not provided, just create at least 3 dummy datas.',
+	};
+
+	const apiRequestBody = {
+		model: 'gpt-3.5-turbo',
+		messages: [
+			systemMessage, // always needs to be the first message
+			userMessage, // [Message]
+		],
+	};
+
+	return await fetch('https://api.openai.com/v1/chat/completions', {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(apiRequestBody),
+	});
+};
