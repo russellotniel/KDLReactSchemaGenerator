@@ -96,7 +96,7 @@ export const TableGenerator = async (chatMessages: string) => {
 	const systemMessage = {
 		role: 'system',
 		content:
-			'Please generate an PostgreSQL Database DDL. Generate the database table from user input without preamble. To create table, use CREATE TABLE tableName, do not use CREATE TABLE IF NOT EXISTS or other examples. Do not make ALTER TABLE, TRIGGERS, INDEXES, etc. Just make the tables with the desired formats, with primary keys and foreign keys. For foreign keys, use this format FOREIGN KEY (attribute) REFERENCES tableName(attribute). Make sure you use the syntax FOREIGN KEY.',
+			'Please generate an PostgreSQL Database DDL. Generate the database table from user input without preamble. To create table, use CREATE TABLE tableName, do not use CREATE TABLE IF NOT EXISTS or other examples. Do not make ALTER TABLE, TRIGGERS, INDEXES, etc. Just make the tables with the desired formats, with primary keys and foreign keys. For foreign keys, use this format FOREIGN KEY (attribute) REFERENCES tableName(attribute). Make sure you use the syntax FOREIGN KEY. Do not use any other format when creating FOREIGN KEY.',
 		// content: 'Please response with an AML Syntax. Generate the database table from user input without preamble.',
 	};
 

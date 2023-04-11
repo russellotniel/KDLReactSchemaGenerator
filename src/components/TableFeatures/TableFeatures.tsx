@@ -54,22 +54,40 @@ const SchemaEditor: React.FC<Props> = ({ features }) => {
 
   mermaid.initialize({ startOnLoad: true });
 
+  // const generateSQL = async () => {
+  //   setLoading(true);
+  //   await PostgreSQLGenerator(inputValue)
+  //     .then((data) => {
+  //       return data.json();
+  //     })
+  //     .then((data) => {
+  //       setLoading(false);
+  //       setDDL(data.choices[0].message.content);
+  //       setOpen(true);
+  //     })
+  //     .catch((e) => {
+  //       setLoading(false);
+  //       alert("Error occured. Please try again!");
+  //     });
+  // };
+
   const generateSQL = async () => {
-    setLoading(true);
-    await PostgreSQLGenerator(inputValue)
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setLoading(false);
-        setDDL(data.choices[0].message.content);
-        setOpen(true);
-      })
-      .catch((e) => {
-        setLoading(false);
-        alert("Error occured. Please try again!");
-      });
-  };
+		setLoading(true);
+		let input = ref.current ? ref.current.value : '';
+		await PostgreSQLGenerator(input)
+			.then((data) => {
+				return data.json();
+			})
+			.then((data) => {
+				setLoading(false);
+				setDDL(data.choices[0].message.content);
+				setOpen(true);
+			})
+			.catch((e) => {
+				setLoading(false);
+				alert('Error occured. Please try again!');
+			});
+	};
 
   const handleClose = () => setOpen(false);
 
